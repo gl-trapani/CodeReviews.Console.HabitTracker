@@ -2,9 +2,9 @@
 
 using HabitTracker.Habits;
 using HabitTracker.Repositories;
+using HabitTracker.UserInterface;
 
 namespace HabitTracker;
-
 
 internal class Program
 {
@@ -13,9 +13,16 @@ internal class Program
         Config config = new Config();
 
         var connection = config.ConnectDb();
-        
+
+
         BaseRepo exerciseRepo = new ExerciseRepo(connection);
-        exerciseRepo.Insert(new Exercise("blbla", 1));
-        exerciseRepo.Select();
+        
+        var mainMenu = new MainMenu(exerciseRepo);
+
+        while (true)
+        {
+            mainMenu.Display();
+            mainMenu.Options();
+        }
     }
 }
