@@ -6,7 +6,7 @@ public static class Input
 {
     public static int ValidInt()
     {
-        string? userInput = Console.ReadLine();
+        var userInput = Console.ReadLine();
         int validInput;
 
         while (!int.TryParse(userInput, out validInput))
@@ -19,9 +19,9 @@ public static class Input
 
     public static string ValidDate()
     {
-        Regex rg = new Regex(@"^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}$");
+        var rg = new Regex(@"^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}$");
         
-        string? userInput = Console.ReadLine();
+        var userInput = Console.ReadLine();
 
         while (!rg.IsMatch(userInput) && userInput != "now")
         {
