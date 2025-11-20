@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using HabitTracker.Habits;
 using HabitTracker.Repositories;
 using HabitTracker.UserInterface;
 
@@ -10,7 +9,7 @@ internal class Program
 {
     public static void Main(string[] args)
     {
-        Config config = new Config();
+        var config = new Config();
 
         var connection = config.ConnectDb();
 

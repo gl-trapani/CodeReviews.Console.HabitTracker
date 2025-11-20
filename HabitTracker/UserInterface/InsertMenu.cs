@@ -24,18 +24,18 @@ public class InsertMenu (BaseRepo exerciseRepo)
 
     public void Options()
     {
-        int.TryParse(Console.ReadLine(),out int input);
+        int.TryParse(Console.ReadLine(),out var input);
         
         switch (input)
         {
             case 1:
                 //todo make method
                 Console.WriteLine("Enter exercise Name:");
-                string? type = Console.ReadLine();
+                var type = Console.ReadLine();
                 Console.WriteLine("Enter exercise Quantity:");
-                int quantity = Input.ValidInt();
+                var quantity = Input.ValidInt();
                 Console.WriteLine("Enter Date (Format: MM/DD/YYYY) type 'now' for todays date:");
-                string date = Input.ValidDate();
+                var date = Input.ValidDate();
                 _exerciseRepo.Insert(new Exercise(type, quantity, date));
                 break;
         }

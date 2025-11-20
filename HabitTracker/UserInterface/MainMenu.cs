@@ -5,6 +5,7 @@ namespace HabitTracker.UserInterface;
 public class MainMenu(BaseRepo exerciseRepo)
 {
     InsertMenu insertMenu = new(exerciseRepo);
+    SelectMenu selectMenu = new(exerciseRepo);
 
     public void Display()
     {
@@ -19,12 +20,15 @@ public class MainMenu(BaseRepo exerciseRepo)
 
     public void Options()
     {
-        int input = Input.ValidInt();
+        var input = Input.ValidInt();
         
         switch (input)
         {
             case 1:
                 insertMenu.DoInsert();
+                break;
+            case 4:
+                selectMenu.DoSelect();
                 break;
         }
     }
