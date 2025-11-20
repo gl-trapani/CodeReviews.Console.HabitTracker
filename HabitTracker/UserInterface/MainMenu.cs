@@ -19,8 +19,8 @@ public class MainMenu(BaseRepo exerciseRepo)
 
     public void Options()
     {
-        int.TryParse(Console.ReadLine(), out int input);
-
+        int input = Input.ValidInt();
+        
         switch (input)
         {
             case 1:

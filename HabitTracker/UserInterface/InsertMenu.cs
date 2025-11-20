@@ -29,11 +29,14 @@ public class InsertMenu (BaseRepo exerciseRepo)
         switch (input)
         {
             case 1:
+                //todo make method
                 Console.WriteLine("Enter exercise Name:");
-                string type = Console.ReadLine();
+                string? type = Console.ReadLine();
                 Console.WriteLine("Enter exercise Quantity:");
-                int.TryParse(Console.ReadLine(),out int quantity);
-                _exerciseRepo.Insert(new Exercise(type, quantity));
+                int quantity = Input.ValidInt();
+                Console.WriteLine("Enter Date (Format: MM/DD/YYYY) type 'now' for todays date:");
+                string date = Input.ValidDate();
+                _exerciseRepo.Insert(new Exercise(type, quantity, date));
                 break;
         }
     }
