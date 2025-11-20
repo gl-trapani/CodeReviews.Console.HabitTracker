@@ -8,7 +8,7 @@ public abstract class BaseRepo
 
     public abstract void Insert(IHabit habit);
 
-    public abstract void Select();
+    public abstract List<IHabit> Select();
 
     public abstract void Update();
     
