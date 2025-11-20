@@ -20,7 +20,7 @@ public class ExerciseRepo : BaseRepo
             """
             CREATE TABLE IF NOT EXISTS habit_exercise(
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        date TIMESTAMP,
+                        date event_date TEXT CHECK (date LIKE '__/__/____'),
                         exercise_type VARCHAR(255),
                         quantity SMALLINT NOT NULL
                         )
@@ -36,10 +36,11 @@ public class ExerciseRepo : BaseRepo
             INSERT INTO habit_exercise(date, exercise_type,quantity) 
             VALUES(@date, @exercise_type, @quantity)
             """;
-        tableCmd.Parameters.AddWithValue("@date", DateTime.Now);
+        tableCmd.Parameters.AddWithValue("@date", exercise.Date);
         tableCmd.Parameters.AddWithValue("@quantity", exercise.Quantity);
         tableCmd.Parameters.AddWithValue("@exercise_type", exercise.Type);
         tableCmd.ExecuteNonQuery();
+        Console.WriteLine($"New Exercise Created Successfully");
     }
 
     public override void Select()
