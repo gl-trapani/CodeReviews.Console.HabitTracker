@@ -40,25 +40,29 @@ public class ExerciseRepo : BaseRepo
         tableCmd.Parameters.AddWithValue("@quantity", exercise.Quantity);
         tableCmd.Parameters.AddWithValue("@exercise_type", exercise.Type);
         tableCmd.ExecuteNonQuery();
-        Console.WriteLine($"New Exercise Created Successfully");
+        Console.WriteLine($"New Exercise Created Successfully. Returning...");
+        Thread.Sleep(2000);
     }
 
-    public override void Select()
+    public override List<IHabit> Select()
     {
-       var tableCmd = connection.CreateCommand();
-       tableCmd.CommandText =
-           """
-           SELECT * FROM habit_exercise
-           """;
-       var reader = tableCmd.ExecuteReader();
-       while (reader.Read())
-       {
-           var date = reader["date"].ToString();
-           var exerciseType = reader["exercise_type"].ToString();
-           var quantity = reader["quantity"].ToString();
-           
-           Console.WriteLine($"{date} {exerciseType} {quantity}");
-       }
+        var exercises = new List<IHabit>();
+
+        var tableCmd = connection.CreateCommand();
+        tableCmd.CommandText =
+            "SELECT * FROM habit_exercise";
+
+        var reader = tableCmd.ExecuteReader();
+        while (reader.Read())
+        {
+            int.TryParse(reader["id"].ToString(), out int id);
+            var date = reader["date"].ToString();
+            var type = reader["exercise_type"].ToString();
+            int.TryParse(reader["quantity"].ToString(), out int quantity);
+
+            exercises.Add(new Exercise(type, quantity, date, id));
+        }
+        return exercises;
     }
 
     public override void Update()
