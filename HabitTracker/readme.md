@@ -33,5 +33,5 @@ ___
 ___
 - Plan before you code!
 - Use the Readme as a project log.
-- Write unit tests.
-- Find out what unit tests are.
+- Do unit testing.
+- Find out what unit testing is.
