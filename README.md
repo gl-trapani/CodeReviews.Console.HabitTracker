@@ -1,7 +1,6 @@
 # Console Habit Logger
 Console based CRUD application to track habits.
 ## Given Requirements:
-___
 - [x] Log occurrences of habits
 - [x] Habits are tracked by quantity
 - [x] Users need to input date to insert habit
@@ -10,7 +9,6 @@ ___
 - [x] Users should be able to insert, delete, update and view their habits
 
 ## Features
-___
 - SQLite database connection
   - The program uses a SQLite db connection to store and read information.
   - If no database exists, or the correct table does not exist they will be created on program start.
@@ -20,7 +18,6 @@ ___
   - Input is validated.
 
 ## Challenges
-___
 - I used OOP and probably made the app more complex than it needed to be.
 - I am very uncertain about the architecture of OOP applications.
   - What needs to be a Class?
@@ -30,7 +27,6 @@ ___
 - I dont think I understand the use and implementation of Exceptions yet.
 
 ## Lessons Learned
-___
 - Plan before you code!
 - Use the Readme as a project log.
 - Do unit testing.
