@@ -3,11 +3,11 @@ using Microsoft.Data.Sqlite;
 
 namespace HabitTracker.Repositories;
 
-public class ExerciseRepo : IRepo
+public class WaterRepo : IRepo
 {
     private readonly SqliteConnection _connection;
 
-    public ExerciseRepo(SqliteConnection connection)
+    public WaterRepo(SqliteConnection connection)
     {
         this._connection = connection;
         CreateTable();
@@ -18,10 +18,9 @@ public class ExerciseRepo : IRepo
         var tableCmd = _connection.CreateCommand();
         tableCmd.CommandText =
             """
-            CREATE TABLE IF NOT EXISTS habit_exercise(
+            CREATE TABLE IF NOT EXISTS habit_water(
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         date event_date TEXT CHECK (date LIKE '__/__/____'),
-                        exercise_type VARCHAR(255),
                         quantity SMALLINT NOT NULL
                         )
             """;
@@ -33,64 +32,59 @@ public class ExerciseRepo : IRepo
         var tableCmd = _connection.CreateCommand();
         tableCmd.CommandText =
             """
-            INSERT INTO habit_exercise(date, exercise_type,quantity) 
-            VALUES(@date, @exercise_type, @quantity)
+            INSERT INTO habit_water(date, quantity) 
+            VALUES(@date, @quantity)
             """;
         tableCmd.Parameters.AddWithValue("@date", habit.Date);
         tableCmd.Parameters.AddWithValue("@quantity", habit.Quantity);
-        tableCmd.Parameters.AddWithValue("@exercise_type", habit.Type);
         tableCmd.ExecuteNonQuery();
-        Console.WriteLine($"New Exercise Created Successfully. Returning...");
+        Console.WriteLine($"New Water Created Successfully. Returning...");
         Thread.Sleep(2000);
     }
 
     public List<IHabit> Select()
     {
-        var exercises = new List<IHabit>();
+        var waters = new List<IHabit>();
 
         var tableCmd = _connection.CreateCommand();
         tableCmd.CommandText =
-            "SELECT * FROM habit_exercise";
+            "SELECT * FROM habit_water";
 
         var reader = tableCmd.ExecuteReader();
         while (reader.Read())
         {
             int.TryParse(reader["id"].ToString(), out var id);
             var date = reader["date"].ToString();
-            var type = reader["exercise_type"].ToString();
             int.TryParse(reader["quantity"].ToString(), out var quantity);
 
-            exercises.Add(new Exercise(quantity, date, id, type));
+            waters.Add(new Water(quantity, date, id));
         }
 
-        return exercises;
+        return waters;
     }
 
     public void Update(IHabit habit)
     {
         var tableCmd = _connection.CreateCommand();
-        tableCmd.CommandText = "UPDATE habit_exercise SET exercise_type = @type, date = @date, quantity = @quantity WHERE id = @id";
+        tableCmd.CommandText = "UPDATE habit_water SET date = @date, quantity = @quantity WHERE id = @id";
         tableCmd.Parameters.AddWithValue("@id", habit.Id);
         tableCmd.Parameters.AddWithValue("@date", habit.Date);
-        tableCmd.Parameters.AddWithValue("@type", habit.Type);
         tableCmd.Parameters.AddWithValue("@quantity", habit.Quantity);
-        tableCmd.ExecuteNonQuery();
-    }
-
-    public void Delete(int id)
-    {
-        var tableCmd = _connection.CreateCommand();
-        tableCmd.CommandText =
-            "DELETE FROM habit_exercise WHERE id = @id; UPDATE sqlite_sequence SET seq = (SELECT MAX(id) FROM habit_exercise) WHERE name='habit_exercise'";
-        tableCmd.Parameters.AddWithValue("@id", id);
         tableCmd.ExecuteNonQuery();
     }
 
     public void Delete()
     {
         var tableCmd = _connection.CreateCommand();
-        tableCmd.CommandText =
-            "DELETE FROM habit_exercise; UPDATE sqlite_sequence SET seq = (SELECT MAX(id) FROM habit_exercise) WHERE name='habit_exercise'";
+        tableCmd.CommandText = "DELETE FROM habit_water";
+        tableCmd.ExecuteNonQuery();
+    }
+
+    public void Delete(int id)
+    {
+        var tableCmd = _connection.CreateCommand();
+        tableCmd.CommandText = "DELETE FROM habit_water WHERE id = @id";
+        tableCmd.Parameters.AddWithValue("@id", id);
         tableCmd.ExecuteNonQuery();
     }
 }

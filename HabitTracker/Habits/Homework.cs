@@ -2,14 +2,14 @@ using HabitTracker.UserInterface;
 
 namespace HabitTracker.Habits;
 
-public class Exercise : IHabit
+public class Homework : IHabit
 {
     public int? Id { get; set; }
     public int Quantity { get; set; }
     public string? Type { get; set; }
     public string? Date { get; set; }
 
-    public Exercise(int quantity = 0, string? date = null, int id = 0, string type = null)
+    public Homework(string type = null, int quantity = 0, string? date = null, int id = 0)
     {
         Id = id;
         Type = type;
@@ -19,19 +19,19 @@ public class Exercise : IHabit
 
     public void Print()
     {
-        Console.WriteLine($"Id {Id}, Exercise {Type}, Quantity {Quantity}, Date {Date}");
+        Console.WriteLine($"Id {Id}, Homework {Type}, Quantity {Quantity}, Date {Date}");
     }
-
+    
     public void SetParameters()
     {
         if (Quantity == 0)
         {
-            Console.WriteLine("Enter exercise quantity:");
+            Console.WriteLine("Enter homework quantity:");
             Quantity = Input.ValidInt();
         }
         else
         {
-            Console.WriteLine("Enter exercise quantity, press Space to skip:");
+            Console.WriteLine("Enter homework quantity, press Space to skip:");
             var key = Console.ReadKey(intercept: true).Key;
             if (key == ConsoleKey.Spacebar)
             {
@@ -64,12 +64,12 @@ public class Exercise : IHabit
 
         if (string.IsNullOrEmpty(Type))
         {
-            Console.WriteLine("Enter exercise Name:");
+            Console.WriteLine("Enter homework subject:");
             Type = Console.ReadLine();
         }
         else
         {
-            Console.WriteLine("Enter exercise name, press Space to skip:");
+            Console.WriteLine("Enter homework subject, press Space to skip:");
             var key = Console.ReadKey(intercept: true).Key;
             if (key == ConsoleKey.Spacebar)
             {

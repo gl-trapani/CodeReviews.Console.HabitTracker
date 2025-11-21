@@ -2,36 +2,34 @@ using HabitTracker.UserInterface;
 
 namespace HabitTracker.Habits;
 
-public class Exercise : IHabit
+public class Water : IHabit
 {
     public int? Id { get; set; }
     public int Quantity { get; set; }
     public string? Type { get; set; }
     public string? Date { get; set; }
-
-    public Exercise(int quantity = 0, string? date = null, int id = 0, string type = null)
+    
+    public Water(int quantity = 0, string? date = null, int id = 0)
     {
         Id = id;
-        Type = type;
         Quantity = quantity;
         Date = date;
     }
-
     public void Print()
     {
-        Console.WriteLine($"Id {Id}, Exercise {Type}, Quantity {Quantity}, Date {Date}");
+        Console.WriteLine($"Id {Id}, Water, Quantity {Quantity}, Date {Date}");
     }
 
     public void SetParameters()
     {
         if (Quantity == 0)
         {
-            Console.WriteLine("Enter exercise quantity:");
+            Console.WriteLine("Enter water quantity:");
             Quantity = Input.ValidInt();
         }
         else
         {
-            Console.WriteLine("Enter exercise quantity, press Space to skip:");
+            Console.WriteLine("Enter water quantity, press Space to skip:");
             var key = Console.ReadKey(intercept: true).Key;
             if (key == ConsoleKey.Spacebar)
             {
@@ -59,25 +57,6 @@ public class Exercise : IHabit
             else
             {
                 Date = Input.ValidDate();
-            }
-        }
-
-        if (string.IsNullOrEmpty(Type))
-        {
-            Console.WriteLine("Enter exercise Name:");
-            Type = Console.ReadLine();
-        }
-        else
-        {
-            Console.WriteLine("Enter exercise name, press Space to skip:");
-            var key = Console.ReadKey(intercept: true).Key;
-            if (key == ConsoleKey.Spacebar)
-            {
-                // skip
-            }
-            else
-            {
-                Type = Console.ReadLine();
             }
         }
     }

@@ -28,6 +28,11 @@ public static class Input
             Console.WriteLine("Please enter a valid date");
             userInput = Console.ReadLine();
         }
+
+        if (userInput == "now")
+        {
+            userInput = DateTime.Now.ToShortDateString();
+        }
         
         return userInput;
     }

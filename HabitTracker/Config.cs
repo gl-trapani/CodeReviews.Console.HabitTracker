@@ -4,11 +4,11 @@ namespace HabitTracker;
 
 public class Config
 {
-    private string _connectionString = @"Data Source=habit-Tracker.db";
+    private const string ConnectionString = "Data Source=habit-Tracker.db";
 
-    public SqliteConnection? ConnectDb()
+    public static SqliteConnection ConnectDb()
     {
-        var connection = new SqliteConnection(_connectionString);
+        var connection = new SqliteConnection(ConnectionString);
         connection.Open();
         return connection;
     }

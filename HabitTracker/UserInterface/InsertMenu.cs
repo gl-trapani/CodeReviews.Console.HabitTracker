@@ -3,11 +3,9 @@ using HabitTracker.Repositories;
 
 namespace HabitTracker.UserInterface;
 
-public class InsertMenu (BaseRepo exerciseRepo)
+public class InsertMenu(IRepo exerciseRepo, IRepo waterRepo, IRepo homeworkRepo, IMenu habitMenu) : IMenu
 {
-    private BaseRepo _exerciseRepo = exerciseRepo;
-
-    public void DoInsert()
+    public void DoJob()
     {
         Display();
         Options();
@@ -19,24 +17,37 @@ public class InsertMenu (BaseRepo exerciseRepo)
         Console.WriteLine("Habit Tracker");
         Console.WriteLine();
         Console.WriteLine("Habit to insert:");
-        Console.WriteLine("1 - Exercise");
+        habitMenu.Display();
     }
 
-    public void Options()
+    private void Options()
     {
-        int.TryParse(Console.ReadLine(),out var input);
+        var userInput = Console.ReadLine();
+
+        if (userInput == null) return;
         
+        HabitTypes? input = (HabitTypes)Enum.Parse(typeof(HabitTypes), userInput);
+
         switch (input)
         {
-            case 1:
-                //todo make method
-                Console.WriteLine("Enter exercise Name:");
-                var type = Console.ReadLine();
-                Console.WriteLine("Enter exercise Quantity:");
-                var quantity = Input.ValidInt();
-                Console.WriteLine("Enter Date (Format: MM/DD/YYYY) type 'now' for todays date:");
-                var date = Input.ValidDate();
-                _exerciseRepo.Insert(new Exercise(type, quantity, date));
+            case HabitTypes.Exercise:
+                var exercise = new Exercise();
+                exercise.SetParameters();
+                exerciseRepo.Insert(exercise);
+                break;
+            case HabitTypes.Water:
+                var water = new Water();
+                water.SetParameters();
+                waterRepo.Insert(water);
+                break;
+            case HabitTypes.Homework:
+                var homework = new Homework();
+                homework.SetParameters();
+                homeworkRepo.Insert(homework);
+                break;
+            default:
+                Console.WriteLine("Invalid input");
+                Console.WriteLine(500);
                 break;
         }
     }

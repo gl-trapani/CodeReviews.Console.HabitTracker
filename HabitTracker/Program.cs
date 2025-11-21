@@ -1,27 +1,22 @@
-﻿// See https://aka.ms/new-console-template for more information
-
+﻿using HabitTracker;
 using HabitTracker.Repositories;
 using HabitTracker.UserInterface;
 
-namespace HabitTracker;
+var connection = Config.ConnectDb();
 
-internal class Program
+
+var exerciseRepo = new ExerciseRepo(connection);
+var waterRepo = new WaterRepo(connection);
+var homeworkRepo = new HomeworkRepo(connection);
+
+var habitMenu = new HabitMenu();
+var deleteMenu = new DeleteMenu(exerciseRepo, waterRepo, homeworkRepo, habitMenu);
+var selectMenu = new SelectMenu(exerciseRepo, waterRepo, homeworkRepo, habitMenu);
+var insertMenu = new InsertMenu(exerciseRepo, waterRepo, homeworkRepo, habitMenu);
+var updateMenu = new UpdateMenu(exerciseRepo, waterRepo, homeworkRepo, habitMenu);
+var mainMenu = new MainMenu(insertMenu, selectMenu, deleteMenu, updateMenu);
+
+while (true)
 {
-    public static void Main(string[] args)
-    {
-        var config = new Config();
-
-        var connection = config.ConnectDb();
-
-
-        BaseRepo exerciseRepo = new ExerciseRepo(connection);
-        
-        var mainMenu = new MainMenu(exerciseRepo);
-
-        while (true)
-        {
-            mainMenu.Display();
-            mainMenu.Options();
-        }
-    }
+    mainMenu.DoJob();
 }

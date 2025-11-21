@@ -3,13 +3,13 @@ using Microsoft.Data.Sqlite;
 
 namespace HabitTracker.Repositories;
 
-public class ExerciseRepo : IRepo
+public class HomeworkRepo : IRepo
 {
     private readonly SqliteConnection _connection;
 
-    public ExerciseRepo(SqliteConnection connection)
+    public HomeworkRepo(SqliteConnection connection)
     {
-        this._connection = connection;
+        _connection = connection;
         CreateTable();
     }
 
@@ -18,10 +18,10 @@ public class ExerciseRepo : IRepo
         var tableCmd = _connection.CreateCommand();
         tableCmd.CommandText =
             """
-            CREATE TABLE IF NOT EXISTS habit_exercise(
+            CREATE TABLE IF NOT EXISTS habit_homework(
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         date event_date TEXT CHECK (date LIKE '__/__/____'),
-                        exercise_type VARCHAR(255),
+                        homework_type VARCHAR(255),
                         quantity SMALLINT NOT NULL
                         )
             """;
@@ -33,14 +33,14 @@ public class ExerciseRepo : IRepo
         var tableCmd = _connection.CreateCommand();
         tableCmd.CommandText =
             """
-            INSERT INTO habit_exercise(date, exercise_type,quantity) 
-            VALUES(@date, @exercise_type, @quantity)
+            INSERT INTO habit_homework(date, homework_type,quantity) 
+            VALUES(@date, @homework_type, @quantity)
             """;
         tableCmd.Parameters.AddWithValue("@date", habit.Date);
         tableCmd.Parameters.AddWithValue("@quantity", habit.Quantity);
-        tableCmd.Parameters.AddWithValue("@exercise_type", habit.Type);
+        tableCmd.Parameters.AddWithValue("@homework_type", habit.Type);
         tableCmd.ExecuteNonQuery();
-        Console.WriteLine($"New Exercise Created Successfully. Returning...");
+        Console.WriteLine($"New Homework Created Successfully. Returning...");
         Thread.Sleep(2000);
     }
 
@@ -50,17 +50,17 @@ public class ExerciseRepo : IRepo
 
         var tableCmd = _connection.CreateCommand();
         tableCmd.CommandText =
-            "SELECT * FROM habit_exercise";
+            "SELECT * FROM habit_homework";
 
         var reader = tableCmd.ExecuteReader();
         while (reader.Read())
         {
             int.TryParse(reader["id"].ToString(), out var id);
             var date = reader["date"].ToString();
-            var type = reader["exercise_type"].ToString();
+            var type = reader["homework_type"].ToString();
             int.TryParse(reader["quantity"].ToString(), out var quantity);
 
-            exercises.Add(new Exercise(quantity, date, id, type));
+            exercises.Add(new Homework(type, quantity, date, id));
         }
 
         return exercises;
@@ -69,7 +69,8 @@ public class ExerciseRepo : IRepo
     public void Update(IHabit habit)
     {
         var tableCmd = _connection.CreateCommand();
-        tableCmd.CommandText = "UPDATE habit_exercise SET exercise_type = @type, date = @date, quantity = @quantity WHERE id = @id";
+        tableCmd.CommandText =
+            "UPDATE habit_homework SET homework_type = @type, date = @date, quantity = @quantity WHERE id = @id";
         tableCmd.Parameters.AddWithValue("@id", habit.Id);
         tableCmd.Parameters.AddWithValue("@date", habit.Date);
         tableCmd.Parameters.AddWithValue("@type", habit.Type);
@@ -81,7 +82,7 @@ public class ExerciseRepo : IRepo
     {
         var tableCmd = _connection.CreateCommand();
         tableCmd.CommandText =
-            "DELETE FROM habit_exercise WHERE id = @id; UPDATE sqlite_sequence SET seq = (SELECT MAX(id) FROM habit_exercise) WHERE name='habit_exercise'";
+            @"DELETE FROM habit_homework WHERE id = @id; UPDATE sqlite_sequence SET seq = (SELECT MAX(id) FROM habit_homework) WHERE name='habit_homework'";
         tableCmd.Parameters.AddWithValue("@id", id);
         tableCmd.ExecuteNonQuery();
     }
@@ -90,7 +91,7 @@ public class ExerciseRepo : IRepo
     {
         var tableCmd = _connection.CreateCommand();
         tableCmd.CommandText =
-            "DELETE FROM habit_exercise; UPDATE sqlite_sequence SET seq = (SELECT MAX(id) FROM habit_exercise) WHERE name='habit_exercise'";
+            @"DELETE FROM habit_homework; UPDATE sqlite_sequence SET seq = (SELECT MAX(id) FROM habit_homework) WHERE name='habit_homework'";
         tableCmd.ExecuteNonQuery();
     }
 }
